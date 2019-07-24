@@ -12,9 +12,7 @@ contract Medicine {
     uint public expiryDate;
     TypesOfMedicine public typeOfMedicine;
     
-    /**
-      * Address of contract creator.
-      */
+    /** @dev stores the address of the creator*/
     address public creatorAddress;
     
     constructor(
@@ -24,8 +22,8 @@ contract Medicine {
         uint _quantity,
         uint _manufacturingDate,
         uint _expiryDate,
-        TypesOfMedicine _typeOfMedicine
-        ) public
+        TypesOfMedicine _typeOfMedicine)
+        public
     {
         require(_quantity > 0);
         require(_expiryDate > _manufacturingDate);  

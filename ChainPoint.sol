@@ -11,9 +11,7 @@ contract ChainPoint {
     string public businessRegistrationCertificateLink;
     string public goodPracticeCertificateLink;
     
-    /**
-      * Address of contract creator.
-      */
+    /** @dev stores the address of the creator*/
     address public creatorAddress;
 
     constructor(
@@ -22,8 +20,8 @@ contract ChainPoint {
         string memory _phoneNumber,
         string memory _taxCode,
         string memory _BRCLink,
-        string memory _GPCLink
-        ) public
+        string memory _GPCLink)
+        public
     {
         require(keccak256(abi.encodePacked((_taxCode))) != keccak256(abi.encodePacked((''))));
         creatorAddress = msg.sender;
