@@ -6,7 +6,7 @@ contract Medicine {
     
     string public name;
     string public branchName;
-    string public lotNumber;
+    string public batchNumber;
     uint public quantity;
     uint public manufacturingDate;
     uint public expiryDate;
@@ -20,7 +20,7 @@ contract Medicine {
     constructor(
         string memory _name,
         string memory _branchName,
-        string memory _lotNumber,
+        string memory _batchNumber,
         uint _quantity,
         uint _manufacturingDate,
         uint _expiryDate,
@@ -33,7 +33,7 @@ contract Medicine {
         
         name = _name;
         branchName = _branchName;
-        lotNumber = _lotNumber;
+        batchNumber = _batchNumber;
         quantity = _quantity;
         manufacturingDate = _manufacturingDate;
         expiryDate = _expiryDate;
