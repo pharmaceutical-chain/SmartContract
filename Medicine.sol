@@ -39,4 +39,9 @@ contract Medicine {
         expiryDate = _expiryDate;
         typeOfMedicine = _typeOfMedicine;
     }
+    
+    function removeMedicine() public {
+        require(msg.sender == creatorAddress);
+        selfdestruct(tx.origin);
+    }
 }
