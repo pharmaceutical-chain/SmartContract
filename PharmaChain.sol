@@ -1,5 +1,6 @@
 pragma solidity >=0.4.22 <0.6.0;
 import './Medicine.sol';
+import './ChainPoint.sol';
 
 contract PharmaChain {
     
@@ -14,16 +15,18 @@ contract PharmaChain {
     
     event AdminAdded(address _address);
     event AdminRemoved(address _address);
-    event NewMedicineBatchReleased(string _guid, address _address);
+    event MedicineBatchReleased(string _guid, address _address);
     event MedicineBatchRemoved(string _guid, address _address);
+    event ChainPointAdded(string _guid, address _address);
+    event ChainPointRemoved(string _guid, address _address);
     
     constructor() public {
         globalAdmin = msg.sender;
         admins[msg.sender] = true;
     }
     
-    // ================Functions================
-    function releaseNewMedicineBatch(
+    // ================Medicine Functions================
+    function releaseMedicineBatch(
         string memory _guid,
         string memory _name,
         string memory _branchName,
@@ -49,7 +52,7 @@ contract PharmaChain {
                                     
         contractAddresses[key] = address(newMedicineBatch);
                                     
-        emit NewMedicineBatchReleased(_guid, address(newMedicineBatch));
+        emit MedicineBatchReleased(_guid, address(newMedicineBatch));
     }
     
     function removeMedicineBatch(string memory _guid) public onlyAdmin {
@@ -61,6 +64,45 @@ contract PharmaChain {
         delete contractAddresses[key];
     }
     
+    // ================ChainPoint Functions================
+    function addChainPoint(
+        string memory _guid,
+        string memory _name,
+        string memory _address,
+        string memory _phoneNumber,
+        string memory _taxCode,
+        string memory _BRCLink,
+        string memory _GPCLink) 
+        public 
+        onlyAdmin 
+    {
+        bytes32 key = getKey(_guid);
+        
+        ChainPoint newChainPoint = new ChainPoint(
+                                    _guid,
+                                    _name,
+                                    _address,
+                                    _phoneNumber,
+                                    _taxCode,
+                                    _BRCLink,
+                                    _GPCLink);
+                                    
+        contractAddresses[key] = address(newChainPoint);
+                                    
+        emit ChainPointAdded(_guid, address(newChainPoint));
+    }
+    
+    function removeChainPoint(string memory _guid) public onlyAdmin {
+        bytes32 key = getKey(_guid);
+        
+        ChainPoint(contractAddresses[key]).removeChainPoint();
+
+        emit ChainPointRemoved(_guid, contractAddresses[key]);
+        delete contractAddresses[key];
+    }
+    
+    
+    // ================Administrator Functions================
     function addAdmin(address _address) public onlyGlobalAdmin {
         admins[_address] = true;
         emit AdminAdded(_address);
