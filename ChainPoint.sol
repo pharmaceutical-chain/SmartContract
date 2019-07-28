@@ -4,6 +4,7 @@ contract ChainPoint {
 
     enum RolesOfChainPoint { Manufacturer, Distributor, Pharmacy }
     
+    string public guid;
     string public namePoint;
     string public fullAddress;
     string public phoneNumber;
@@ -15,6 +16,7 @@ contract ChainPoint {
     address public creatorAddress;
 
     constructor(
+        string memory _guid,
         string memory _name,
         string memory _address,
         string memory _phoneNumber,
@@ -23,9 +25,11 @@ contract ChainPoint {
         string memory _GPCLink)
         public
     {
+        require(keccak256(abi.encodePacked((_guid))) != keccak256(abi.encodePacked((''))));
         require(keccak256(abi.encodePacked((_taxCode))) != keccak256(abi.encodePacked((''))));
         creatorAddress = msg.sender;
         
+        guid = _guid;
         namePoint = _name;
         fullAddress = _address;
         phoneNumber = _phoneNumber;
