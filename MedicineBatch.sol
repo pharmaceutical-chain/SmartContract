@@ -1,6 +1,6 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-contract Medicine {
+contract MedicineBatch {
 
     enum TypesOfMedicine { Pill, Bottle }
     
@@ -42,7 +42,7 @@ contract Medicine {
         typeOfMedicine = _typeOfMedicine;
     }
     
-    function removeMedicine() public {
+    function removeMedicineBatch() public {
         require(msg.sender == creatorAddress);
         selfdestruct(tx.origin);
     }
