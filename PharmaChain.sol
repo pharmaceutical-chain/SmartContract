@@ -71,7 +71,7 @@ contract PharmaChain {
     function removeMedicineBatch(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
         
-        MedicineBatch(contractAddresses[key]).removeMedicineBatch();
+        MedicineBatch(contractAddresses[key]).destroy();
 
         emit MedicineBatchRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];
@@ -108,7 +108,7 @@ contract PharmaChain {
     function removeChainPoint(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
         
-        ChainPoint(contractAddresses[key]).removeChainPoint();
+        ChainPoint(contractAddresses[key]).destroy();
 
         emit ChainPointRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];
@@ -162,7 +162,7 @@ contract PharmaChain {
     function removeMedicineBatchTransfer(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
         
-        MedicineBatchTransfer(contractAddresses[key]).removeMedicineBatchTransfer();
+        MedicineBatchTransfer(contractAddresses[key]).destroy();
 
         emit MedicineBatchTransferRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];

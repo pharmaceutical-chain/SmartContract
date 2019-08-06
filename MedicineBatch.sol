@@ -1,6 +1,8 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-contract MedicineBatch {
+import './Ownable.sol';
+
+contract MedicineBatch is Ownable {
 
     enum TypesOfMedicine { Pill, Bottle }
     
@@ -13,9 +15,6 @@ contract MedicineBatch {
     uint public expiryDate;
     TypesOfMedicine public typeOfMedicine;
     
-    /** @dev stores the address of the creator*/
-    address public creatorAddress;
-    
     constructor(
         string memory _guid,
         string memory _name,
@@ -27,11 +26,6 @@ contract MedicineBatch {
         TypesOfMedicine _typeOfMedicine)
         public
     {
-        require(keccak256(abi.encodePacked((_guid))) != keccak256(abi.encodePacked((''))));
-        require(_quantity > 0);
-        require(_expiryDate > _manufacturingDate);  
-        creatorAddress = msg.sender;
-        
         guid = _guid;
         name = _name;
         branchName = _branchName;
@@ -42,8 +36,23 @@ contract MedicineBatch {
         typeOfMedicine = _typeOfMedicine;
     }
     
-    function removeMedicineBatch() public {
-        require(msg.sender == creatorAddress);
-        selfdestruct(tx.origin);
+    function updateMedicineBatchInformations(
+        string memory _name,
+        string memory _branchName,
+        string memory _batchNumber,
+        uint _quantity,
+        uint _manufacturingDate,
+        uint _expiryDate,
+        TypesOfMedicine _typeOfMedicine) 
+        public 
+        onlyOwner 
+    {
+        name = _name;
+        branchName = _branchName;
+        batchNumber = _batchNumber;
+        quantity = _quantity;
+        manufacturingDate = _manufacturingDate;
+        expiryDate = _expiryDate;
+        typeOfMedicine = _typeOfMedicine;
     }
 }
