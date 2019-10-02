@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pharmaceutical-chain/SmartContract/issues"
   },
-  "homepage": "https://github.com/pharmaceutical-chain/SmartContract#readme"
+  "homepage": "https://github.com/pharmaceutical-chain/SmartContract#readme",
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.17"
+  }
 }
