@@ -2,17 +2,18 @@ pragma solidity >=0.4.22 <0.6.0;
 
 import './Ownable.sol';
 
-contract ChainPoint is Ownable {
+contract Tenant is Ownable {
 
-    enum RolesOfChainPoint { Manufacturer, Distributor, Pharmacy }
-    
+    enum TenantType { NotAvailable, Manufacturer, Distributor, Retailer }
+
     string public guid;
-    string public namePoint;
+    string public name;
     string public fullAddress;
     string public phoneNumber;
     string public taxCode;
-    string public businessRegistrationCertificateLink;
-    string public goodPracticeCertificateLink;
+    string public registrationCode;
+    string public goodPractices;
+    TenantType public tenantType;
 
     constructor(
         string memory _guid,
@@ -20,34 +21,43 @@ contract ChainPoint is Ownable {
         string memory _address,
         string memory _phoneNumber,
         string memory _taxCode,
-        string memory _BRCLink,
-        string memory _GPCLink)
+        string memory _registrationCode,
+        string memory _goodPractices)
         public
     {
         guid = _guid;
-        namePoint = _name;
+        name = _name;
         fullAddress = _address;
         phoneNumber = _phoneNumber;
         taxCode = _taxCode;
-        businessRegistrationCertificateLink = _BRCLink;
-        goodPracticeCertificateLink = _GPCLink;
+        registrationCode = _registrationCode;
+        goodPractices = _goodPractices;
     }
-    
+
     function updateChainPointInformations(
         string memory _name,
         string memory _address,
         string memory _phoneNumber,
         string memory _taxCode,
-        string memory _BRCLink,
-        string memory _GPCLink)
-        public 
+        string memory _registrationCode,
+        string memory _goodPractices)
+        public
         onlyOwner
     {
-        namePoint = _name;
+        name = _name;
         fullAddress = _address;
         phoneNumber = _phoneNumber;
         taxCode = _taxCode;
-        businessRegistrationCertificateLink = _BRCLink;
-        goodPracticeCertificateLink = _GPCLink;
+        registrationCode = _registrationCode;
+        goodPractices = _goodPractices;
     }
+
+    function updateTenantType(
+        uint8 _type)
+        public
+        onlyOwner
+    {
+        tenantType = TenantType(_type);
+    }
+
 }
