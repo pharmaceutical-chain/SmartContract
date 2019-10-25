@@ -39,29 +39,28 @@ contract PharmaChain {
     }
 
     // ================Medicine Functions================
-    function releaseMedicineBatch(
+    function addMedicineBatch(
         string memory _guid,
-        string memory _name,
-        string memory _branchName,
+        string memory _commercialName,
+        string memory _registrationCode,
         string memory _batchNumber,
         uint _quantity,
         uint _manufacturingDate,
-        uint _expiryDate,
-        MedicineBatch.TypesOfMedicine _typeOfMedicine)
+        uint _expiryDate)
         public
         onlyAdmin
     {
         bytes32 key = getKey(_guid);
-    
+
         MedicineBatch newMedicineBatch = new MedicineBatch(
                                             _guid,
-                                            _name,
-                                            _branchName,
+                                            _commercialName,
+                                            _registrationCode,
                                             _batchNumber,
                                             _quantity,
                                             _manufacturingDate,
                                             _expiryDate,
-                                            _typeOfMedicine);
+                                            msg.sender);
 
         contractAddresses[key] = address(newMedicineBatch);
 
