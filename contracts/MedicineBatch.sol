@@ -9,6 +9,8 @@ contract MedicineBatch is Ownable {
 
     string public batchNumber;
 
+    string public manufacturerId;
+
     uint public quantity;
     string public unit;
 
@@ -19,12 +21,14 @@ contract MedicineBatch is Ownable {
         string memory _guid,
         string memory _medicineId,
         string memory _batchNumber,
+        string memory _manufacturerId,
         address masterContractOwner)
         public
     {
         guid = _guid;
         medicineId = _medicineId;
         batchNumber = _batchNumber;
+        manufacturerId = _manufacturerId;
 
         // Because this contract will be created by a transaction. That transaction will be the owner by default, which is not our intent.
         // So we will pass the owner address of the master contract and transfer ownership of the batch contract to him.
