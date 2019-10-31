@@ -8,6 +8,7 @@ contract Medicine is Ownable {
 
     string public commercialName;
     string public registrationCode;
+    
     bool public isPrescriptionMedicine;
     string public dosageForm;
     string public ingredientConcentration;
