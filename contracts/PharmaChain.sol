@@ -1,8 +1,9 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import './MedicineBatch.sol';
-import './Tenant.sol';
-import './MedicineBatchTransfer.sol';
+import "./Medicine.sol";
+import "./MedicineBatch.sol";
+import "./MedicineBatchTransfer.sol";
+import "./Tenant.sol";
 
 contract PharmaChain {
 
@@ -26,10 +27,16 @@ contract PharmaChain {
 
     event AdminAdded(address _address);
     event AdminRemoved(address _address);
-    event MedicineBatchReleased(string _guid, address _address);
-    event MedicineBatchRemoved(string _guid, address _address);
+
     event TenantAdded(string _guid, address _address);
     event TenantRemoved(string _guid, address _address);
+
+    event MedicineAdded(string _guid, address _address);
+    event MedicineRemoved(string _guid, address _address);
+
+    event MedicineBatchAdded(string _guid, address _address);
+    event MedicineBatchRemoved(string _guid, address _address);
+
     event MedicineBatchTransferAdded(string _guid, address _address);
     event MedicineBatchTransferRemoved(string _guid, address _address);
 
@@ -39,32 +46,58 @@ contract PharmaChain {
     }
 
     // ================Medicine Functions================
-    function addMedicineBatch(
+    function addMedicine(
         string memory _guid,
         string memory _commercialName,
-        string memory _registrationCode,
+        string memory _registrationCode
+    )
+        public
+        onlyAdmin
+    {
+        bytes32 key = getKey(_guid);
+
+        Medicine newMedicine = new Medicine(
+            _guid,
+            _commercialName,
+            _registrationCode,
+            msg.sender);
+
+        contractAddresses[key] = address(newMedicine);
+
+        emit MedicineBatchAdded(_guid, address(newMedicine));
+    }
+
+    function removeMedicine(string memory _guid) public onlyAdmin 
+    {
+        bytes32 key = getKey(_guid);
+
+        Medicine(contractAddresses[key]).destroy();
+
+        emit MedicineBatchRemoved(_guid, contractAddresses[key]);
+        delete contractAddresses[key];
+    }
+
+    // ================Medicine Batch Functions================
+    function addMedicineBatch(
+        string memory _guid,
+        string memory _medicineId,
         string memory _batchNumber,
-        uint _quantity,
-        uint _manufacturingDate,
-        uint _expiryDate)
+        string memory _manufacturerId)
         public
         onlyAdmin
     {
         bytes32 key = getKey(_guid);
 
         MedicineBatch newMedicineBatch = new MedicineBatch(
-                                            _guid,
-                                            _commercialName,
-                                            _registrationCode,
-                                            _batchNumber,
-                                            _quantity,
-                                            _manufacturingDate,
-                                            _expiryDate,
-                                            msg.sender);
+            _guid,
+            _medicineId,
+            _batchNumber,
+            _manufacturerId,
+            msg.sender);
 
         contractAddresses[key] = address(newMedicineBatch);
 
-        emit MedicineBatchReleased(_guid, address(newMedicineBatch));
+        emit MedicineBatchAdded(_guid, address(newMedicineBatch));
     }
 
     function removeMedicineBatch(string memory _guid) public onlyAdmin {
@@ -91,13 +124,13 @@ contract PharmaChain {
         bytes32 key = getKey(_guid);
 
         Tenant newChainPoint = new Tenant(
-                                        _guid,
-                                        _name,
-                                        _address,
-                                        _phoneNumber,
-                                        _taxCode,
-                                        _registrationCode,
-                                        _goodPractices);
+            _guid,
+            _name,
+            _address,
+            _phoneNumber,
+            _taxCode,
+            _registrationCode,
+            _goodPractices);
 
         contractAddresses[key] = address(newChainPoint);
 
@@ -120,6 +153,7 @@ contract PharmaChain {
         string memory _fromPointId,
         string memory _toPointId,
         uint _quantity,
+        uint _dateTransferred,
         uint _chainIndex) 
         public 
         onlyAdmin 
@@ -130,11 +164,13 @@ contract PharmaChain {
         require(_chainIndex <= chainCounter);
         
         MedicineBatchTransfer transfer = new MedicineBatchTransfer(
-                                            _guid,
-                                            _medicineBatchId,
-                                            _fromPointId,
-                                            _toPointId,
-                                            _quantity);
+            _guid,
+            _medicineBatchId,
+            _fromPointId,
+            _toPointId,
+            _quantity,
+            _dateTransferred,
+            msg.sender);
                                             
         contractAddresses[key] = address(transfer);
 
