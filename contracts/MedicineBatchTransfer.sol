@@ -1,44 +1,49 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import './Ownable.sol';
+import "./Ownable.sol";
 
 contract MedicineBatchTransfer is Ownable {
     
     string public guid;
     string public medicineBatchId;
-    string public fromPointId;
-    string public toPointId;
+    string public fromTenantId;
+    string public toTenantId;
     uint public quantity;
-    uint public timestamp;
+    uint public dateTransferred;
 
     constructor(
         string memory _guid,
         string memory _medicineBatchId,
-        string memory _fromPointId,
-        string memory _toPointId,
-        uint _quantity)
+        string memory _fromTenantId,
+        string memory _toTenantId,
+        uint _quantity,
+        uint _dateTransferred,
+        address masterContractOwner)
         public
     {
         guid = _guid;
         medicineBatchId = _medicineBatchId;
-        fromPointId = _fromPointId;
-        toPointId = _toPointId;
+        fromTenantId = _fromTenantId;
+        toTenantId = _toTenantId;
         quantity = _quantity;
-        timestamp = now;
+        dateTransferred = _dateTransferred;
+
+        Ownable.transferOwnership(masterContractOwner);
     }
     
     function updateMedicineBatchTransfer(
         string memory _medicineBatchId,
-        string memory _fromPointId,
-        string memory _toPointId,
-        uint _quantity) 
+        string memory _fromTenantId,
+        string memory _toTenantId,
+        uint _quantity,
+        uint _dateTransferred) 
         public 
         onlyOwner 
     {
         medicineBatchId = _medicineBatchId;
-        fromPointId = _fromPointId;
-        toPointId = _toPointId;
+        fromTenantId = _fromTenantId;
+        toTenantId = _toTenantId;
         quantity = _quantity;
-        timestamp = now;
+        dateTransferred = _dateTransferred;
     }
 }

@@ -1,84 +1,60 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import './Ownable.sol';
+import "./Ownable.sol";
 
 contract MedicineBatch is Ownable {
 
-    enum TypesOfMedicine { Pill, Bottle }
-
     string public guid;
-    string public commercialName;
-    string public registrationCode;
+    string public medicineId;
+
     string public batchNumber;
 
-    bool public isPrescriptionMedicine;
-
-    string public ingredientConcentration;
-
-    string public packingSpecification;
     uint public quantity;
+    string public unit;
 
     uint public manufacturerDate;
     uint public expiryDate;
 
-    string public dosageForm;
-
-    uint public declaredPrice;
-
     constructor(
         string memory _guid,
-        string memory _commercialName,
-        string memory _registrationCode,
+        string memory _medicineId,
         string memory _batchNumber,
-        uint _quantity,
-        uint _manufacturerDate,
-        uint _expiryDate,
         address masterContractOwner)
         public
     {
         guid = _guid;
-        commercialName = _commercialName;
-        registrationCode = _registrationCode;
+        medicineId = _medicineId;
         batchNumber = _batchNumber;
-        quantity = _quantity;
-        manufacturerDate = _manufacturerDate;
-        expiryDate = _expiryDate;
 
         // Because this contract will be created by a transaction. That transaction will be the owner by default, which is not our intent.
         // So we will pass the owner address of the master contract and transfer ownership of the batch contract to him.
         Ownable.transferOwnership(masterContractOwner);
     }
 
-    function updateMedicineBatchInformations(
-        string memory _commercialName,
-        string memory _registrationCode,
-        string memory _batchNumber,
-        bool _isPrescriptionMedicine,
-        string memory _ingredientConcentration,
-        string memory _packingSpecification,
-        uint _quantity,
-        uint _manufacturerDate,
-        uint _expiryDate,
-        string memory _dosageForm,
-        uint _declaredPrice)
+    function updateMedicineBatchRegistrationInformation(
+        string memory _medicineId,
+        string memory _batchNumber
+    )
         public
         onlyOwner
     {
-        commercialName = _commercialName;
-        registrationCode = _registrationCode;
+        medicineId = _medicineId;
         batchNumber = _batchNumber;
-        isPrescriptionMedicine = _isPrescriptionMedicine;
-        ingredientConcentration = _ingredientConcentration;
-        packingSpecification = _packingSpecification;
-        quantity = _quantity;
-        manufacturerDate = _manufacturerDate;
-        expiryDate = _expiryDate;
-        dosageForm = _dosageForm;
-        declaredPrice = _declaredPrice;
     }
 
-    function updatePrice(uint _declaredPrice) public onlyOwner
+    function updateMedicineBatchInformation(
+        uint _quantity,
+        string memory _unit,
+        uint _manufacturerDate,
+        uint _expiryDate
+    )
+        public
+        onlyOwner
     {
-        declaredPrice = _declaredPrice;
+        quantity = _quantity;
+        unit = _unit;
+        manufacturerDate = _manufacturerDate;
+        expiryDate = _expiryDate;
     }
+
 }
