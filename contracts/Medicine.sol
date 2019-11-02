@@ -36,32 +36,24 @@ contract Medicine is Ownable {
 
     function updateMedicineInformation(
         string memory _commercialName,
-        string memory _registrationCode
+        string memory _registrationCode,
+        bool _isPrescriptionMedicine,
+        string memory _ingredientConcentration,
+        string memory _packingSpecification,
+        string memory _dosageForm,
+        uint _declaredPrice,
+        string memory _submittedTenantId
     )
         public
         onlyOwner
     {
         commercialName = _commercialName;
         registrationCode = _registrationCode;
-    }
-
-    function updateMedicineTechnicalInformation(
-        bool _isPrescriptionMedicine,
-        string memory _ingredientConcentration,
-        string memory _packingSpecification,
-        string memory _dosageForm
-    )
-        public
-        onlyOwner
-    {
         isPrescriptionMedicine = _isPrescriptionMedicine;
         ingredientConcentration = _ingredientConcentration;
         packingSpecification = _packingSpecification;
         dosageForm = _dosageForm;
-    }    
-
-    function updatePrice(uint _declaredPrice) public onlyOwner
-    {
         declaredPrice = _declaredPrice;
+        submittedTenantId = _submittedTenantId;
     }
 }
