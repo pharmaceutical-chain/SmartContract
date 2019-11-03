@@ -40,7 +40,8 @@ contract Tenant is Ownable {
         string memory _phoneNumber,
         string memory _taxCode,
         string memory _registrationCode,
-        string memory _goodPractices)
+        string memory _goodPractices,
+        uint8 _type)
         public
         onlyOwner
     {
@@ -50,13 +51,6 @@ contract Tenant is Ownable {
         taxCode = _taxCode;
         registrationCode = _registrationCode;
         goodPractices = _goodPractices;
-    }
-
-    function updateTenantType(
-        uint8 _type)
-        public
-        onlyOwner
-    {
         tenantType = TenantType(_type);
     }
 

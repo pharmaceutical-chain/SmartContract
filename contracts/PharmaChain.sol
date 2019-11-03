@@ -1,8 +1,9 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import './MedicineBatch.sol';
-import './Tenant.sol';
-import './MedicineBatchTransfer.sol';
+import "./Medicine.sol";
+import "./MedicineBatch.sol";
+import "./MedicineBatchTransfer.sol";
+import "./Tenant.sol";
 
 contract PharmaChain {
 
@@ -24,47 +25,60 @@ contract PharmaChain {
     /** @dev stores the address of the Global Administrator */
     address public globalAdmin;
 
-    event AdminAdded(address _address);
-    event AdminRemoved(address _address);
-    event MedicineBatchReleased(string _guid, address _address);
-    event MedicineBatchRemoved(string _guid, address _address);
-    event TenantAdded(string _guid, address _address);
-    event TenantRemoved(string _guid, address _address);
-    event MedicineBatchTransferAdded(string _guid, address _address);
-    event MedicineBatchTransferRemoved(string _guid, address _address);
-
     constructor() public {
         globalAdmin = msg.sender;
         admins[msg.sender] = true;
     }
 
     // ================Medicine Functions================
-    function addMedicineBatch(
+    function addMedicine(
         string memory _guid,
         string memory _commercialName,
-        string memory _registrationCode,
+        string memory _registrationCode
+    )
+        public
+        onlyAdmin
+    {
+        bytes32 key = getKey(_guid);
+
+        Medicine newMedicine = new Medicine(
+            _guid,
+            _commercialName,
+            _registrationCode,
+            msg.sender);
+
+        contractAddresses[key] = address(newMedicine);
+    }
+
+    function removeMedicine(string memory _guid) public onlyAdmin 
+    {
+        bytes32 key = getKey(_guid);
+
+        Medicine(contractAddresses[key]).destroy();
+
+        delete contractAddresses[key];
+    }
+
+    // ================Medicine Batch Functions================
+    function addMedicineBatch(
+        string memory _guid,
+        string memory _medicineId,
         string memory _batchNumber,
-        uint _quantity,
-        uint _manufacturingDate,
-        uint _expiryDate)
+        string memory _manufacturerId)
         public
         onlyAdmin
     {
         bytes32 key = getKey(_guid);
 
         MedicineBatch newMedicineBatch = new MedicineBatch(
-                                            _guid,
-                                            _commercialName,
-                                            _registrationCode,
-                                            _batchNumber,
-                                            _quantity,
-                                            _manufacturingDate,
-                                            _expiryDate,
-                                            msg.sender);
+            _guid,
+            _medicineId,
+            _batchNumber,
+            _manufacturerId,
+            msg.sender);
 
         contractAddresses[key] = address(newMedicineBatch);
 
-        emit MedicineBatchReleased(_guid, address(newMedicineBatch));
     }
 
     function removeMedicineBatch(string memory _guid) public onlyAdmin {
@@ -72,7 +86,6 @@ contract PharmaChain {
 
         MedicineBatch(contractAddresses[key]).destroy();
 
-        emit MedicineBatchRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];
     }
 
@@ -91,17 +104,16 @@ contract PharmaChain {
         bytes32 key = getKey(_guid);
 
         Tenant newChainPoint = new Tenant(
-                                        _guid,
-                                        _name,
-                                        _address,
-                                        _phoneNumber,
-                                        _taxCode,
-                                        _registrationCode,
-                                        _goodPractices);
+            _guid,
+            _name,
+            _address,
+            _phoneNumber,
+            _taxCode,
+            _registrationCode,
+            _goodPractices);
 
         contractAddresses[key] = address(newChainPoint);
 
-        emit TenantAdded(_guid, address(newChainPoint));
     }
 
     function removeTenant(string memory _guid) public onlyAdmin {
@@ -109,17 +121,17 @@ contract PharmaChain {
 
         Tenant(contractAddresses[key]).destroy();
 
-        emit TenantRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];
     }
     
     // ================Medicine Batch Transfer Functions================
-    function transferMedicineBatch(
+    function addMedicineBatchTransfer(
         string memory _guid,
         string memory _medicineBatchId,
         string memory _fromPointId,
         string memory _toPointId,
         uint _quantity,
+        uint _dateTransferred,
         uint _chainIndex) 
         public 
         onlyAdmin 
@@ -130,11 +142,13 @@ contract PharmaChain {
         require(_chainIndex <= chainCounter);
         
         MedicineBatchTransfer transfer = new MedicineBatchTransfer(
-                                            _guid,
-                                            _medicineBatchId,
-                                            _fromPointId,
-                                            _toPointId,
-                                            _quantity);
+            _guid,
+            _medicineBatchId,
+            _fromPointId,
+            _toPointId,
+            _quantity,
+            _dateTransferred,
+            msg.sender);
                                             
         contractAddresses[key] = address(transfer);
 
@@ -144,10 +158,9 @@ contract PharmaChain {
             chainCounter++;
         }
 
-        emit MedicineBatchTransferAdded(_guid, address(transfer));
     }
 
-    function getMedicineTransfer(
+    function getMedicineBatchTransfer(
         string memory _medicineBatchId,
         uint _chainIndex,
         uint _transferIndex) 
@@ -163,19 +176,16 @@ contract PharmaChain {
         
         MedicineBatchTransfer(contractAddresses[key]).destroy();
 
-        emit MedicineBatchTransferRemoved(_guid, contractAddresses[key]);
         delete contractAddresses[key];
     }
 
     // ================Administrator Functions================
     function addAdmin(address _address) public onlyGlobalAdmin {
         admins[_address] = true;
-        emit AdminAdded(_address);
     }
 
     function removeAdmin(address _address) public onlyGlobalAdmin {
         delete admins[_address];
-        emit AdminRemoved(_address);
     }
 
     /**
