@@ -35,18 +35,10 @@ contract MedicineBatch is Ownable {
         Ownable.transferOwnership(masterContractOwner);
     }
 
-    function updateMedicineBatchRegistrationInformation(
-        string memory _medicineId,
-        string memory _batchNumber
-    )
-        public
-        onlyOwner
-    {
-        medicineId = _medicineId;
-        batchNumber = _batchNumber;
-    }
-
     function updateMedicineBatchInformation(
+        string memory _medicineId,
+        string memory _batchNumber,
+        string memory _manufacturerId,
         uint _quantity,
         string memory _unit,
         uint _manufacturerDate,
@@ -55,10 +47,11 @@ contract MedicineBatch is Ownable {
         public
         onlyOwner
     {
+        medicineId = _medicineId;
+        batchNumber = _batchNumber;
         quantity = _quantity;
         unit = _unit;
         manufacturerDate = _manufacturerDate;
         expiryDate = _expiryDate;
     }
-
 }
