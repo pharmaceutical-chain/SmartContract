@@ -49,6 +49,7 @@ contract MedicineBatch is Ownable {
     {
         medicineId = _medicineId;
         batchNumber = _batchNumber;
+        manufacturerId = _manufacturerId;
         quantity = _quantity;
         unit = _unit;
         manufacturerDate = _manufacturerDate;
