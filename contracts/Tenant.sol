@@ -1,6 +1,6 @@
 pragma solidity >=0.4.22 <0.6.0;
 
-import './Ownable.sol';
+import "./Ownable.sol";
 
 contract Tenant is Ownable {
 
@@ -8,6 +8,7 @@ contract Tenant is Ownable {
 
     string public guid;
     string public name;
+    string public email;
     string public fullAddress;
     string public phoneNumber;
     string public taxCode;
@@ -36,6 +37,7 @@ contract Tenant is Ownable {
 
     function updateChainPointInformations(
         string memory _name,
+        string memory _email,
         string memory _address,
         string memory _phoneNumber,
         string memory _taxCode,
@@ -46,6 +48,7 @@ contract Tenant is Ownable {
         onlyOwner
     {
         name = _name;
+        email = _email;
         fullAddress = _address;
         phoneNumber = _phoneNumber;
         taxCode = _taxCode;
