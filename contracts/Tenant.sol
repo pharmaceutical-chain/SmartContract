@@ -35,7 +35,7 @@ contract Tenant is Ownable {
         goodPractices = _goodPractices;
     }
 
-    function updateChainPointInformations(
+    function updateTenantInformation(
         string memory _name,
         string memory _email,
         string memory _address,
