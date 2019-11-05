@@ -50,7 +50,7 @@ contract PharmaChain {
         contractAddresses[key] = address(newMedicine);
     }
 
-    function removeMedicine(string memory _guid) public onlyAdmin 
+    function removeMedicine(string memory _guid) public onlyAdmin
     {
         bytes32 key = getKey(_guid);
 
@@ -110,7 +110,8 @@ contract PharmaChain {
             _phoneNumber,
             _taxCode,
             _registrationCode,
-            _goodPractices);
+            _goodPractices,
+            msg.sender);
 
         contractAddresses[key] = address(newChainPoint);
 

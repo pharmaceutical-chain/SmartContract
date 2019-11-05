@@ -23,7 +23,8 @@ contract Tenant is Ownable {
         string memory _phoneNumber,
         string memory _taxCode,
         string memory _registrationCode,
-        string memory _goodPractices)
+        string memory _goodPractices,
+        address masterContractOwner)
         public
     {
         guid = _guid;
@@ -33,6 +34,8 @@ contract Tenant is Ownable {
         taxCode = _taxCode;
         registrationCode = _registrationCode;
         goodPractices = _goodPractices;
+
+        Ownable.transferOwnership(masterContractOwner);
     }
 
     function updateTenantInformation(
