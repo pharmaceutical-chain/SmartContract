@@ -23,7 +23,6 @@ contract Tenant is Ownable {
         string memory _phoneNumber,
         string memory _taxCode,
         string memory _registrationCode,
-        string memory _goodPractices,
         address masterContractOwner)
         public
     {
@@ -33,7 +32,6 @@ contract Tenant is Ownable {
         phoneNumber = _phoneNumber;
         taxCode = _taxCode;
         registrationCode = _registrationCode;
-        goodPractices = _goodPractices;
 
         Ownable.transferOwnership(masterContractOwner);
     }

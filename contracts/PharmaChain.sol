@@ -96,8 +96,7 @@ contract PharmaChain {
         string memory _address,
         string memory _phoneNumber,
         string memory _taxCode,
-        string memory _registrationCode,
-        string memory _goodPractices)
+        string memory _registrationCode)
         public
         onlyAdmin
     {
@@ -110,7 +109,6 @@ contract PharmaChain {
             _phoneNumber,
             _taxCode,
             _registrationCode,
-            _goodPractices,
             msg.sender);
 
         contractAddresses[key] = address(newChainPoint);
