@@ -10,7 +10,7 @@ contract PharmaChain {
     /** @dev stores medicine batch addresses || chain point addresses || medicine batch transfer by guid */
     mapping(bytes32 => address) public contractAddresses;
 
-    /** @dev stores medicine batch transfers by particular medicine batch like using 3-dimensionality array [getKey(medicineBatchId)][chainIndex][transferIndex] */
+    /** @dev stores medicine batch transfers by particular medicine batch like using 3-dimensionality array [getKey(medicineBatchId)][layerIndex][transferIndex] */
     mapping(bytes32 => mapping(uint => mapping(uint => MedicineBatchTransfer))) public medicineBatchTransfers;
 
     /** @dev stores chain counters which be use to query transfers */
@@ -127,47 +127,51 @@ contract PharmaChain {
     function addMedicineBatchTransfer(
         string memory _guid,
         string memory _medicineBatchId,
-        string memory _fromPointId,
-        string memory _toPointId,
+        string memory _fromTenantId,
+        string memory _toTenantId,
         uint _quantity,
         uint _dateTransferred,
-        uint _chainIndex) 
+        uint _tierIndex) 
         public 
         onlyAdmin 
     {
         bytes32 key = getKey(_medicineBatchId);
-        uint chainCounter = chainCounters[key];
-        uint transferCounter = transferCounters[key][chainCounter];
-        require(_chainIndex <= chainCounter);
+        //uint chainCounter = chainCounters[key];
+        uint transferCounter = transferCounters[key][_tierIndex];
+        //require(_chainIndex <= chainCounter);
         
         MedicineBatchTransfer transfer = new MedicineBatchTransfer(
             _guid,
             _medicineBatchId,
-            _fromPointId,
-            _toPointId,
+            _fromTenantId,
+            _toTenantId,
             _quantity,
             _dateTransferred,
             msg.sender);
                                             
         contractAddresses[key] = address(transfer);
 
-        medicineBatchTransfers[key][_chainIndex][transferCounter] = transfer;
-        transferCounter++;
-        if (_chainIndex == chainCounter) {
-            chainCounter++;
-        }
+        medicineBatchTransfers[key][_tierIndex][transferCounter] = transfer;
 
+        transferCounter++;
+        transferCounters[key][_tierIndex] = transferCounter;
     }
 
     function getMedicineBatchTransfer(
         string memory _medicineBatchId,
-        uint _chainIndex,
+        uint _tierIndex,
         uint _transferIndex) 
         public 
         view
-        returns (string memory) 
+        returns (string memory, string memory, string memory, string memory, uint, uint) 
     {
-        return medicineBatchTransfers[getKey(_medicineBatchId)][_chainIndex][_transferIndex].medicineBatchId();
+        MedicineBatchTransfer result = medicineBatchTransfers[getKey(_medicineBatchId)][_tierIndex][_transferIndex];
+        return (result.guid(),
+            result.medicineBatchId(),
+            result.fromTenantId(),
+            result.toTenantId(),
+            result.quantity(),
+            result.dateTransferred());
     }
     
     function removeMedicineBatchTransfer(string memory _guid) public onlyAdmin {
