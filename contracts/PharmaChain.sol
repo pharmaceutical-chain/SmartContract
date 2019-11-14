@@ -122,7 +122,7 @@ contract PharmaChain {
 
         delete contractAddresses[key];
     }
-    
+
     // ================Medicine Batch Transfer Functions================
     function addMedicineBatchTransfer(
         string memory _guid,
@@ -131,15 +131,15 @@ contract PharmaChain {
         string memory _toTenantId,
         uint _quantity,
         uint _dateTransferred,
-        uint _tierIndex) 
-        public 
-        onlyAdmin 
+        uint _tierIndex)
+        public
+        onlyAdmin
     {
         bytes32 key = getKey(_medicineBatchId);
         //uint chainCounter = chainCounters[key];
         uint transferCounter = transferCounters[key][_tierIndex];
         //require(_chainIndex <= chainCounter);
-        
+
         MedicineBatchTransfer transfer = new MedicineBatchTransfer(
             _guid,
             _medicineBatchId,
@@ -148,7 +148,7 @@ contract PharmaChain {
             _quantity,
             _dateTransferred,
             msg.sender);
-                                            
+
         contractAddresses[key] = address(transfer);
 
         medicineBatchTransfers[key][_tierIndex][transferCounter] = transfer;
@@ -160,10 +160,10 @@ contract PharmaChain {
     function getMedicineBatchTransfer(
         string memory _medicineBatchId,
         uint _tierIndex,
-        uint _transferIndex) 
-        public 
+        uint _transferIndex)
+        public
         view
-        returns (string memory, string memory, string memory, string memory, uint, uint) 
+        returns (string memory, string memory, string memory, string memory, uint, uint)
     {
         MedicineBatchTransfer result = medicineBatchTransfers[getKey(_medicineBatchId)][_tierIndex][_transferIndex];
         return (result.guid(),
@@ -173,10 +173,10 @@ contract PharmaChain {
             result.quantity(),
             result.dateTransferred());
     }
-    
+
     function removeMedicineBatchTransfer(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
-        
+
         MedicineBatchTransfer(contractAddresses[key]).destroy();
 
         delete contractAddresses[key];
