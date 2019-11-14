@@ -54,7 +54,7 @@ contract PharmaChain {
     {
         bytes32 key = getKey(_guid);
 
-        Medicine(contractAddresses[key]).destroy();
+        //Medicine(contractAddresses[key]).destroy();
 
         delete contractAddresses[key];
     }
@@ -84,7 +84,7 @@ contract PharmaChain {
     function removeMedicineBatch(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
 
-        MedicineBatch(contractAddresses[key]).destroy();
+        //MedicineBatch(contractAddresses[key]).destroy();
 
         delete contractAddresses[key];
     }
@@ -118,7 +118,7 @@ contract PharmaChain {
     function removeTenant(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
 
-        Tenant(contractAddresses[key]).destroy();
+        //Tenant(contractAddresses[key]).destroy();
 
         delete contractAddresses[key];
     }
@@ -135,7 +135,7 @@ contract PharmaChain {
         public
         onlyAdmin
     {
-        bytes32 key = getKey(_medicineBatchId);
+        bytes32 key = getKey(_guid);
         //uint chainCounter = chainCounters[key];
         uint transferCounter = transferCounters[key][_tierIndex];
         //require(_chainIndex <= chainCounter);
@@ -151,7 +151,7 @@ contract PharmaChain {
 
         contractAddresses[key] = address(transfer);
 
-        medicineBatchTransfers[key][_tierIndex][transferCounter] = transfer;
+        medicineBatchTransfers[getKey(_medicineBatchId)][_tierIndex][transferCounter] = transfer;
 
         transferCounter++;
         transferCounters[key][_tierIndex] = transferCounter;
@@ -177,7 +177,7 @@ contract PharmaChain {
     function removeMedicineBatchTransfer(string memory _guid) public onlyAdmin {
         bytes32 key = getKey(_guid);
 
-        MedicineBatchTransfer(contractAddresses[key]).destroy();
+        //MedicineBatchTransfer(contractAddresses[key]).destroy();
 
         delete contractAddresses[key];
     }

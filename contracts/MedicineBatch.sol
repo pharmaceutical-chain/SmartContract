@@ -55,4 +55,9 @@ contract MedicineBatch is Ownable {
         manufacturerDate = _manufacturerDate;
         expiryDate = _expiryDate;
     }
+
+    function selfDelete() public onlyOwner
+    {
+        selfdestruct(msg.sender);
+    }
 }

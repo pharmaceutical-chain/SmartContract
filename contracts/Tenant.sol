@@ -58,4 +58,8 @@ contract Tenant is Ownable {
         tenantType = TenantType(_type);
     }
 
+    function selfDelete() public onlyOwner
+    {
+        selfdestruct(msg.sender);
+    }
 }

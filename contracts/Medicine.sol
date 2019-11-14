@@ -8,12 +8,12 @@ contract Medicine is Ownable {
 
     string public commercialName;
     string public registrationCode;
-    
+
     bool public isPrescriptionMedicine;
     string public dosageForm;
     string public ingredientConcentration;
     string public packingSpecification;
-    
+
     uint public declaredPrice;
 
     string public submittedTenantId;
@@ -55,5 +55,10 @@ contract Medicine is Ownable {
         dosageForm = _dosageForm;
         declaredPrice = _declaredPrice;
         submittedTenantId = _submittedTenantId;
+    }
+
+    function selfDelete() public onlyOwner
+    {
+        selfdestruct(msg.sender);
     }
 }
