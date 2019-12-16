@@ -5,6 +5,6 @@
 var PharmaChain = artifacts.require("PharmaChain");
 
 module.exports = function(deployer) {
-    deployer.deploy(PharmaChain, { gas: 50000000 });
+    deployer.deploy(PharmaChain);
     // Additional contracts can be deployed here
 };
