@@ -1,6 +1,8 @@
 # SmartContract
 Smart contracts of the PharmaChain system
 
+[![Build Status](https://travis-ci.org/pharmaceutical-chain/SmartContract.svg?branch=master)](https://travis-ci.org/pharmaceutical-chain/SmartContract)
+
 ## Prerequisites
 - Npm.
 - Truffle.
